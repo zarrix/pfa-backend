@@ -1,7 +1,7 @@
 const ObjectId = require("mongoose").Types.ObjectId;
 
 // Models
-const Nursery = require('../models/Nursery');
+const Nursery = require('../models/nursery');
 
 //Read Nurseries from mongoDB
 module.exports.getNurseries = (req, res) => {
