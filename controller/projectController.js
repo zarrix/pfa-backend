@@ -6,12 +6,15 @@ const Image = require('../models/image');
 
 //Read projects from mongoDB
 module.exports.getProjects = (req, res) => {
+    let filter = {};
     const sort = req.query.orderby || "updatedAt";
     const asc = (req.query.asc === 'true') ? 1 : -1;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6;
+    if (req.query.category) filter.category = req.query.category;
+    if (req.query.search) filter.title = new RegExp(req.query.search, "i");
     Project
-        .find((err, docs) => {
+        .find(filter, (err, docs) => {
             if (err) console.log('Error while reading data : ' + err);
             else res.send(docs)
         })
