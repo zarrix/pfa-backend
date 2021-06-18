@@ -17,8 +17,9 @@ module.exports.getImage = (req, res) => {
                     if (image) {
                         res.contentType(image.img.contentType);
                         res.send(image.img.data);
+                    } else {
+                        res.status(400).send('Image with id '+req.params.id + " not found");
                     }
-                    res.status(400).send('Image with id '+req.params.id + " not found");
                 }
         });
     }

@@ -6,7 +6,7 @@ const Image = require('../models/image');
 
 //Read projects from mongoDB
 module.exports.getProjects = (req, res) => {
-    const sort = req.query.filterby || "updatedAt";
+    const sort = req.query.orderby || "updatedAt";
     const asc = (req.query.asc === 'true') ? 1 : -1;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6;
