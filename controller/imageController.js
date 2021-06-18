@@ -5,7 +5,10 @@ const Image = require('../models/image');
 
 //Read image from mongoDB
 module.exports.getImage = (req, res) => {
-    Image
+    if(!ObjectId.isValid(req.params.id)){
+        res.status(400).send('Unkown Id : '+req.params.id);
+    } else {
+        Image
         .findById( 
             req.params.id, 
             function(err,image) {
@@ -14,7 +17,8 @@ module.exports.getImage = (req, res) => {
                     res.contentType(image.img.contentType);
                     res.send(image.img.data);
                 }
-    });
+        });
+    }
 }
 
 //update image
