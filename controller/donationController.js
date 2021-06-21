@@ -30,9 +30,7 @@ module.exports.getDonationById = (req, res) => {
 module.exports.addDonation = (req, res) => {
     const donation = new Donation({
         projectId: req.body.projectId,
-        projectTitle: req.body.projectTitle,
         donorId: req.body.donorId,
-        donorName: req.body.donorName,
         amount: req.body.amount
     });
     donation.save()
@@ -46,7 +44,6 @@ module.exports.addDonation = (req, res) => {
                     $inc: {totalDons: req.body.amount},
                     $addToSet: { donations: {
                         donorId: req.body.donorId,
-                        donorName: req.body.donorName,
                         amount: req.body.amount
                     } },
                 },
@@ -55,13 +52,12 @@ module.exports.addDonation = (req, res) => {
                 if (err) console.log(err);
                 else console.log("Donation added to project information.");
                 }
-            );
+            )
             Donor.findByIdAndUpdate(
                 req.body.donorId,
                 {   
                     $addToSet: { donations: {
                         projectId: req.body.projectId,
-                        projectTitle: req.body.projectTitle,
                         amount: req.body.amount
                     } },
                 },

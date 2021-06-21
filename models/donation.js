@@ -8,15 +8,7 @@ const donationSchema = new Schema({
         type: String,
         required: true
     },
-    projectTitle : {
-        type: String,
-        required: true
-    },
     donorId : {
-        type: String,
-        required: true
-    },
-    donorName : {
         type: String,
         required: true
     },

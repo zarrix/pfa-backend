@@ -7,10 +7,6 @@ const donationsSchema = new Schema({
         type: String,
         required: true
     },
-    donorName: {
-        type: String,
-        required: true
-    },
     amount: {
         type: Number,
         required: true
@@ -25,7 +21,7 @@ const donationsSchema = new Schema({
 const projectSchema = new Schema({
     image: {
         type: String,
-        default: "default.png"
+        required: true
     },
     title : {
         type: String,
