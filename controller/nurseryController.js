@@ -2,6 +2,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 
 // Models
 const Nursery = require('../models/nursery');
+const Tree = require('../models/tree');
 
 //Read Nurseries from mongoDB
 module.exports.getNurseries = (req, res) => {
@@ -83,4 +84,47 @@ module.exports.deleteNursery = (req,res)=>{
             }
         );  
     }  
+}
+
+//add trees to a nursery
+module.exports.addTree = (req, res) => {
+    if(!ObjectId.isValid(req.params.id)){
+        res.status(400).send('Unkown Id : '+req.params.id);
+    } 
+    else {
+        Tree.findOneAndUpdate(
+            {name: req.body.name},
+            {   
+                updatedAt: Date.now(),
+                $inc: {total: req.body.quantity},
+            },
+            { new: true },
+            (err, docs) => {
+                if (err) return res.status(400).send(err);
+                else if (!docs) return res.status(400).send({"error": "Unknown Tree"})
+                else {
+                    console.log("Tree infomation updated.")
+                    Nursery.findByIdAndUpdate(
+                        req.params.id,
+                        {   
+                            updatedAt: Date.now(),
+                            $inc: {totalTrees: req.body.quantity},
+                            $addToSet: { trees: {
+                                name: req.body.name,
+                                quantity: req.body.quantity
+                            }},
+                        },
+                        { new: true },
+                        (err, docs) => {
+                            if (err) console.log(err);
+                            else {
+                                console.log("Trees added to nursery.")
+                                res.status(200).send(docs)
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    }
 }

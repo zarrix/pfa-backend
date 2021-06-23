@@ -70,7 +70,10 @@ module.exports.addTree = (req, res) => {
                             console.log('Tree added successfully.');
                             res.status(201).json(tree);
                         })
-                        .catch(err => console.log(err));
+                        .catch(err => {
+                            console.log(err);
+                            res.status(400).send(err.message)
+                        });
                 });
     } else  {
         const image = new Image({

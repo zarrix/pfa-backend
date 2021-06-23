@@ -27,16 +27,6 @@ const treeSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    nurseries: [{
-        name: {
-            type: String,
-            required: true
-        },
-        quantity: {
-            type: Number,
-            required: true
-        }
-    }],
     updatedAt: {
         type: Date,
         defaut: Date.now()

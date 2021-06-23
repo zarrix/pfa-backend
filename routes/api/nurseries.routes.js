@@ -18,5 +18,8 @@ router.put('/:id', nurseryController.updateNursery)
 //delete a nursery
 router.delete("/:id", nurseryController.deleteNursery);
 
+//add trees to a nursery
+router.post('/:id/addTree', nurseryController.addTree);
+
 
 module.exports = router;

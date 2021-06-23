@@ -62,7 +62,8 @@ module.exports.addDonor = (req, res) => {
                             email: req.body.email,
                             password: req.body.password,
                             phone: req.body.phone,
-                            address: req.body.address
+                            address: req.body.address,
+                            type: req.body.type || 'individual'
                         });
                         donor.save()
                            .then(() => {

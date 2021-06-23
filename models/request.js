@@ -11,6 +11,7 @@ const requestSchema = new mongoose.Schema({
         commune: String,
         village: String
     },
+    nurseryId: String,
     beneficiary: {
         name: String,
         type: String,
@@ -18,15 +19,23 @@ const requestSchema = new mongoose.Schema({
         address : String
     },
     trees: [{
-        name: String,
+        name: {
+            type: String,
+            required: true
+        },
         quantity: {
             type: Number,
             required: true
         }
     }],
-    payment: {
+    totalTrees: {
         type: Number,
         required: true
+    },
+    pricePerTree: Number,
+    totalPrice: {
+        type: Number,
+        default: 0
     },
     status: {
         type: String,

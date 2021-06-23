@@ -14,6 +14,7 @@ const images = require('./routes/api/images.routes');
 const users = require('./routes/api/users.routes');
 const trees = require('./routes/api/trees.routes');
 const nurseries = require('./routes/api/nurseries.routes');
+const requests = require('./routes/api/requests.routes');
 
 //initialize express
 const app = express();
@@ -45,6 +46,7 @@ app.use('/api/images', images);
 app.use('/api/users', users);
 app.use('/api/trees', trees);
 app.use('/api/nurseries', nurseries);
+app.use('/api/requests', requests);
 
 const port = process.env.PORT || 5000;
 
