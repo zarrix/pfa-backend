@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 //Authentication middleware
 const {checkUser,requireAuth} = require('./middleware/auth.middleware');
@@ -18,6 +19,18 @@ const requests = require('./routes/api/requests.routes');
 
 //initialize express
 const app = express();
+
+//Autorisation les requetes pour CLIENTS_URL
+const corsOptions = {
+    origin: 'https://hafbackend.herokuapp.com',  //request source permited
+    credentials: true,  //to allow exposing code to javascript
+    'allowedHeaders': ['sessionId', 'Content-Type'], 
+    'exposedHeaders': ['sessionId'],  //
+    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'preflightContinue': false
+  }
+//autorisation des requetes
+app.use(cors(corsOptions));
 
 //bodyParser middleware
 app.use(bodyParser.json());
