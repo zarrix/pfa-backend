@@ -89,7 +89,8 @@ module.exports.updateProject = (req, res) => {
             {   
                 title: req.body.title,
                 description: req.body.description,
-                goal: req.body.goal
+                goal: req.body.goal,
+                category: req.body.category
             },
             { new: true },
             (err, docs) => {
