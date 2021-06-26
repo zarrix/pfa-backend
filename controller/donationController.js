@@ -77,7 +77,7 @@ module.exports.deleteDonation = (req,res)=>{
         res.status(400).send('Unkown Id :');
     } 
     else {
-        Donation.findOneAndDelete(
+        Donation.findByIdAndDelete(
             req.params.id, 
             (err, docs) => {
                 if (err) res.status(500).send(err.message);

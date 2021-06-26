@@ -60,6 +60,7 @@ module.exports.addTree = (req, res) => {
                         console.log('Image added successfully.');
                         const tree = new Tree({
                             name: req.body.name,
+                            latinName: req.body.latinName,
                             picture: img._id,
                             price: req.body.price,
                             weight: req.body.weight,
@@ -88,6 +89,7 @@ module.exports.addTree = (req, res) => {
                     console.log('Default Image added successfully.');
                     const tree = new Tree({
                         name: req.body.name,
+                        latinName: req.body.latinName,
                         picture: img._id,
                         price: req.body.price,
                         weight: req.body.weight,
@@ -114,6 +116,7 @@ module.exports.updateTree = (req, res) => {
             req.params.id,
             {   
                 name: req.body.name,
+                latinName: req.body.latinName,
                 price: req.body.price,
                 weight: req.body.weight,
                 dimensions: req.body.dimensions,

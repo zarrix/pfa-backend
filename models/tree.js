@@ -7,6 +7,7 @@ const treeSchema = new mongoose.Schema({
         index: true,
         unique: true
     },
+    latinName : String,
     picture : {
         type: String,
         required: true,
