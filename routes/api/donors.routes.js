@@ -24,5 +24,11 @@ router.put('/:id', donorController.updateDonor)
 //delete a donor
 router.delete("/:id", donorController.deleteDonor);
 
+//add to cart
+router.put('/:id/cart/add', donorController.addToCart)
+
+//remove from cart
+router.put('/:id/cart/remove', donorController.removeFromCart)
+
 
 module.exports = router;

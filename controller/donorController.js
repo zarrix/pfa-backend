@@ -147,6 +147,54 @@ module.exports.deleteDonor = (req,res)=>{
     }  
 }
 
+//add to cart 
+module.exports.addToCart = (req, res) => {
+    if(!ObjectId.isValid(req.params.id)){
+        res.status(400).send('Unkown Id : '+req.params.id);
+    } 
+    else {
+        Donor.findByIdAndUpdate(
+            req.params.id,
+            {   
+                $addToSet: { cart: {treeId: req.body.treeId, quantity: req.body.quantity} },
+            },
+            { new: true },
+            (err, docs) => {
+                if (err) res.status(500).send(err.message);
+                else {
+                    console.log("Tree added to donor's cart.");
+                    res.status(200).send(docs)
+                }
+            }
+        )
+        .select('-password');
+    }
+}
+
+//remove from cart
+module.exports.removeFromCart = (req, res) => {
+    if(!ObjectId.isValid(req.params.id)){
+        res.status(400).send('Unkown Id : '+req.params.id);
+    } 
+    else {
+        Donor.findByIdAndUpdate(
+            req.params.id,
+            {   
+                $pull: { cart: {treeId : req.body.treeId } },
+            },
+            { new: true },
+            (err, docs) => {
+                if (err) res.status(500).send(err.message);
+                else {
+                    console.log("Tree removed to donor's cart.");
+                    res.status(200).send(docs)
+                }
+            }
+        )
+        .select('-password');
+    }
+}
+
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 const createToken =(id)=>{
     return jwt.sign({id},TOKEN_SECRET , {

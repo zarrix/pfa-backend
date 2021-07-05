@@ -17,6 +17,19 @@ const donationsSchema = new Schema({
     }
 }, { _id : false });
 
+// create cart schema
+const cartSchema = new Schema({
+    treeId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    quantity: {
+        type: Number,
+        default: 1,
+    }
+}, { _id : false });
+
 //create Donor Schema & Model
 const donorSchema = new Schema({
     picture : {
@@ -48,7 +61,8 @@ const donorSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now()
-    }
+    },
+    cart: [cartSchema],
 });
 
 const Donor = mongoose.model('donor', donorSchema);
