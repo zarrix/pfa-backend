@@ -45,9 +45,10 @@ module.exports.getInfo = async (req, res) => {
             res.status(400).send(err.message)
         } else {
             info["totalTrees"]=total[0].total;
+            res.send(info);
         }
     });
 
-    res.send(info);
+    
 
 }
