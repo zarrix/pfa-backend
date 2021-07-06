@@ -221,6 +221,7 @@ module.exports.login = async (req,res)=>{
                         phone: docs.phone,
                         address: docs.address,
                         donations: docs.donations,
+                        cart: docs.cart
                         createdAt: docs.createdAt
                     })
                 } else {
