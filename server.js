@@ -17,6 +17,7 @@ const trees = require('./routes/api/trees.routes');
 const nurseries = require('./routes/api/nurseries.routes');
 const requests = require('./routes/api/requests.routes');
 const questions = require('./routes/api/questions.routes');
+const dashboard = require('./routes/api/dashboard.routes');
 
 //initialize express
 const app = express();
@@ -62,6 +63,7 @@ app.use('/api/trees', trees);
 app.use('/api/nurseries', nurseries);
 app.use('/api/requests', requests);
 app.use('/api/questions', questions);
+app.use('/api/dashboard', dashboard);
 
 const port = process.env.PORT || 5000;
 
