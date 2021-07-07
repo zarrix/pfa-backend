@@ -154,7 +154,14 @@ module.exports.login = async (req,res)=>{
                     console.log("User logged successfully ...");
                     const token = createToken(docs._id);
                     res.cookie('jwt',token,{httpOnly:true , maxAge:maxAge });
-                    res.status(200).json(docs)
+                    res.status(200).json({
+                        _id: docs._id,
+                        picture: docs.picture,
+                        createdAt: docs.createdAt,
+                        name: docs.name,
+                        username: docs.username,
+                        role: docs.role,
+                    })
                 } else {
                     console.log("Incorrect Password.");
                     res.status(400).send({"error": "Incorrect Password"});
@@ -169,7 +176,7 @@ module.exports.login = async (req,res)=>{
 }
 
 module.exports.logout = (req,res)=>{
-    console.log("method invocked")
     res.clearCookie('jwt', '', { maxAge: 1});
-    res.redirect('/');
+    res.send('User logged out successfully');
+    console.log("User logged out successfully")
 }

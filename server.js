@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 //Authentication middleware
-const {checkUser,requireAuth} = require('./middleware/auth.middleware');
+const {checkUser,requireDonorAuth, requireUserAuth} = require('./middleware/auth.middleware');
 
 const projects = require('./routes/api/projects.routes');
 const donations = require('./routes/api/donations.routes');
@@ -51,8 +51,11 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Use routes
 // app.get('/*', checkUser);
-app.get('/jwtid',requireAuth,(req,res)=>{
+app.get('/donor/jwtid',requireDonorAuth,(req,res)=>{
     res.status(200).send(res.locals.donor);
+});
+app.get('/user/jwtid',requireUserAuth,(req,res)=>{
+  res.status(200).send(res.locals.donor);
 });
 app.use('/api/projects', projects);
 app.use('/api/donations', donations);

@@ -246,7 +246,7 @@ module.exports.login = async (req,res)=>{
 }
 
 module.exports.logout = (req,res)=>{
-    console.log("method invocked")
     res.clearCookie('jwt', '', { maxAge: 1});
-    res.send('Donor logged out successfully ...');
+    res.send('Donor logged out successfully.');
+    console.log("Donor logged out successfully")
 }
