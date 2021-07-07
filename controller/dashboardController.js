@@ -49,3 +49,30 @@ module.exports.getInfo = async (req, res) => {
         }
     });
 }
+
+module.exports.getDTGraph = async (req, res) => {
+    let data = {};
+    Donation.aggregate(
+        [
+          {
+            $group: {
+              _id: { $dateToString: { format: "%Y-%m-%d", date: "$donatedAt" } },
+              donations: {
+                $sum: "$amount"
+              }
+            }
+          },
+          {$sort: { "_id": 1}}
+        ],
+    
+        function(err, result) {
+          if (err) {
+            console.log(err);
+            res.send("Something went wrong.");
+          } else {
+            res.send(result);
+          }
+        }
+      );
+
+}
