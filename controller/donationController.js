@@ -5,12 +5,19 @@ const Donor = require('../models/donor');
 
 //get donations
 module.exports.getDonations = (req, res) => {
+    let filter = {};
+    const sort = req.query.orderby || "updatedAt";
+    const asc = (req.query.asc === 'true') ? 1 : -1;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     Donation
         .find((err, docs) => {
             if (err) console.log('Error while reading data : ' + err);
             else res.send(docs)
         })
-        .sort( {donatedAt: -1} )
+        .sort( {[sort]: asc} )
+        .limit(limit)
+        .skip((page - 1) * limit);
 }
 
 // get donation by id

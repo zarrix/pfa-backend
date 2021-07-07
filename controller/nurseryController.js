@@ -6,12 +6,20 @@ const Tree = require('../models/tree');
 
 //Read Nurseries from mongoDB
 module.exports.getNurseries = (req, res) => {
+    let filter = {};
+    const sort = req.query.orderby || "updatedAt";
+    const asc = (req.query.asc === 'true') ? 1 : -1;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    if (req.query.search) filter.name = new RegExp(req.query.search, "i");
     Nursery
-        .find((err, docs) => {
+        .find(filter, (err, docs) => {
             if (err) console.log('Error while reading data : ' + err);
             else res.send(docs)
         })
-        .sort( {updatedAt: -1} )
+        .sort( {[sort]: asc} )
+        .limit(limit)
+        .skip((page - 1) * limit);
 }
 
 //Read Nursery by id

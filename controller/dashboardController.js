@@ -48,7 +48,4 @@ module.exports.getInfo = async (req, res) => {
             res.send(info);
         }
     });
-
-    
-
 }

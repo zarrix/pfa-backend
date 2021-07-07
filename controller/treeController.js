@@ -11,7 +11,7 @@ module.exports.getTrees = (req, res) => {
     const sort = req.query.orderby || "updatedAt";
     const asc = (req.query.asc === 'true') ? 1 : -1;
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 6;
+    const limit = parseInt(req.query.limit) || 10;
     if (req.query.search) filter.name = new RegExp(req.query.search, "i");
     Tree
         .find(filter, (err, docs) => {

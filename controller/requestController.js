@@ -5,12 +5,20 @@ const Request = require('../models/request');
 
 //Read Requests from mongoDB
 module.exports.getRequests = (req, res) => {
+    let filter = {};
+    const sort = req.query.orderby || "updatedAt";
+    const asc = (req.query.asc === 'true') ? 1 : -1;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    
     Request
         .find((err, docs) => {
             if (err) console.log('Error while reading data : ' + err);
             else res.send(docs)
         })
-        .sort( {requestedAt: -1} )
+        .sort( {[sort]: asc} )
+        .limit(limit)
+        .skip((page - 1) * limit);
 }
 
 //Read Request by id
@@ -32,7 +40,6 @@ module.exports.addRequest = async (req, res) => {
     await req.body.trees.forEach(tree => totalTrees += tree.quantity);
     const pricePerTree = req.body.pricePerTree || 3;
     const totalPrice = totalTrees * pricePerTree;
-    console.log(req.body.beneficiary);
     const request = new Request({
         beneficiary: req.body.beneficiary,
         nurseryId: req.body.nurseryId,
@@ -47,7 +54,10 @@ module.exports.addRequest = async (req, res) => {
             console.log('Request added successfully.');
             res.status(201).json(request);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log(err);
+            res.status(400).send("Something went wrong");
+        });
 }
 
 //update a Request

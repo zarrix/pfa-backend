@@ -1,4 +1,16 @@
 const mongoose = require('mongoose');
+
+// create trees schema
+const treesSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    quantity: {
+        type: Number,
+        required: true
+    }
+}, { _id : false });
  
 const requestSchema = new mongoose.Schema({
     requestedAt: {
@@ -14,20 +26,11 @@ const requestSchema = new mongoose.Schema({
     nurseryId: String,
     beneficiary: {
         name: String,
-        type: String,
+        genre: String,
         phone: String,
         address : String
     },
-    trees: [{
-        name: {
-            type: String,
-            required: true
-        },
-        quantity: {
-            type: Number,
-            required: true
-        }
-    }],
+    trees: [treesSchema],
     totalTrees: {
         type: Number,
         required: true
