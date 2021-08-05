@@ -6,17 +6,13 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 //Authentication middleware
-const {checkUser,requireDonorAuth, requireUserAuth} = require('./middleware/auth.middleware');
+const {checkUser, requireUserAuth} = require('./middleware/auth.middleware');
 
-const projects = require('./routes/api/projects.routes');
-const donations = require('./routes/api/donations.routes');
-const donors = require('./routes/api/donors.routes');
 const images = require('./routes/api/images.routes');
 const users = require('./routes/api/users.routes');
 const trees = require('./routes/api/trees.routes');
 const nurseries = require('./routes/api/nurseries.routes');
 const requests = require('./routes/api/requests.routes');
-const questions = require('./routes/api/questions.routes');
 const dashboard = require('./routes/api/dashboard.routes');
 
 //initialize express
@@ -51,21 +47,15 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Use routes
 // app.get('/*', checkUser);
-app.get('/donor/jwtid',requireDonorAuth,(req,res)=>{
-    res.status(200).send(res.locals.donor);
-});
 app.get('/user/jwtid',requireUserAuth,(req,res)=>{
-  res.status(200).send(res.locals.donor);
+  res.status(200).send(res.locals.users); 
 });
-app.use('/api/projects', projects);
-app.use('/api/donations', donations);
-app.use('/api/donors', donors);
+
 app.use('/api/images', images);
 app.use('/api/users', users);
 app.use('/api/trees', trees);
 app.use('/api/nurseries', nurseries);
 app.use('/api/requests', requests);
-app.use('/api/questions', questions);
 app.use('/api/dashboard', dashboard);
 
 const port = process.env.PORT || 5000;

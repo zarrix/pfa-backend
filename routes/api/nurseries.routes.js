@@ -6,6 +6,12 @@ const nurseryController = require('../../controller/nurseryController');
 //get nurseries
 router.get('/', nurseryController.getNurseries);
 
+//get trees in every nursery
+router.get('/trees', nurseryController.getTrees);
+
+//get materials in every nursery
+router.get('/materials', nurseryController.getMaterials);
+
 //get nursery by id
 router.get('/:id', nurseryController.getNurseryById);
 
@@ -18,8 +24,8 @@ router.put('/:id', nurseryController.updateNursery)
 //delete a nursery
 router.delete("/:id", nurseryController.deleteNursery);
 
-//add trees to a nursery
-router.post('/:id/addTree', nurseryController.addTree);
+//add or remove trees/materials to a nursery
+router.put('/:id/edit', nurseryController.editNursery);
 
 
 module.exports = router;

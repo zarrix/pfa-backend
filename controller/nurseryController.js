@@ -4,6 +4,9 @@ const ObjectId = require("mongoose").Types.ObjectId;
 const Nursery = require('../models/nursery');
 const Tree = require('../models/tree');
 
+// helpers functions
+const functions  = require('../functions/Functions');
+
 //Read Nurseries from mongoDB
 module.exports.getNurseries = (req, res) => {
     let filter = {};
@@ -22,6 +25,200 @@ module.exports.getNurseries = (req, res) => {
         .skip((page - 1) * limit);
 }
 
+//get trees in every nursery
+module.exports.getTrees = (req, res) => {
+    let rs = {
+        almond: {
+            nurseries: [],
+            total: 0
+        },
+        pomegranate: {
+            nurseries: [],
+            total: 0
+        },
+        carob: {
+            nurseries: [],
+            total: 0
+        },
+        walnut: {
+            nurseries: [],
+            total: 0
+        },
+        cherry: {
+            nurseries: [],
+            total: 0
+        },
+        fig: {
+            nurseries: [],
+            total: 0
+        },
+        argan: {
+            nurseries: [],
+            total: 0
+        },
+        olive: {
+            nurseries: [],
+            total: 0
+        },
+    };
+    
+    let filter = {};
+    const sort = req.query.orderby || "updatedAt";
+    const asc = (req.query.asc === 'true') ? 1 : -1;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    if (req.query.search) filter.name = new RegExp(req.query.search, "i");
+
+    Nursery
+        .find({}, (err, docs) => {
+            if (err) console.log('Error while reading data : ' + err);
+            else {
+                docs.forEach(nursery => {
+                    rs.almond.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.almond
+                    });
+                    rs.almond.total += nursery.almond;
+
+                    rs.pomegranate.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.pomegranate
+                    });
+                    rs.pomegranate.total += nursery.pomegranate;
+
+                    rs.carob.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.carob
+                    });
+                    rs.carob.total += nursery.carob;
+
+                    rs.walnut.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.walnut
+                    });
+                    rs.walnut.total += nursery.walnut;
+
+                    rs.cherry.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.cherry
+                    });
+                    rs.cherry.total += nursery.cherry;
+
+                    rs.fig.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.fig
+                    });
+                    rs.fig.total += nursery.fig;
+
+                    rs.argan.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.argan
+                    });
+                    rs.argan.total += nursery.argan;
+
+                    rs.olive.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.olive
+                    });
+                    rs.olive.total += nursery.olive;
+                })
+            res.status(200).send(rs);
+            }
+        });
+}
+
+//get materials in every nursery
+module.exports.getMaterials = (req, res) => {
+    let rs = {
+        soil: {
+            nurseries: [],
+            total: 0
+        },
+        workers: {
+            nurseries: [],
+            total: 0
+        },
+        transport: {
+            nurseries: [],
+            total: 0
+        },
+        seeds: {
+            nurseries: [],
+            total: 0
+        },
+        fertilizers: {
+            nurseries: [],
+            total: 0
+        },
+        takersSalaries: {
+            nurseries: [],
+            total: 0
+        },
+        totalMoney: {
+            nurseries: [],
+            total: 0
+        },
+    };
+    
+    let filter = {};
+    const sort = req.query.orderby || "updatedAt";
+    const asc = (req.query.asc === 'true') ? 1 : -1;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    if (req.query.search) filter.name = new RegExp(req.query.search, "i");
+
+    Nursery
+        .find({}, (err, docs) => {
+            if (err) console.log('Error while reading data : ' + err);
+            else {
+                docs.forEach(nursery => {
+                    rs.soil.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.soil
+                    });
+                    rs.soil.total += nursery.soil;
+
+                    rs.workers.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.workers
+                    });
+                    rs.workers.total += nursery.workers;
+
+                    rs.transport.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.transport
+                    });
+                    rs.transport.total += nursery.transport;
+
+                    rs.seeds.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.seeds
+                    });
+                    rs.seeds.total += nursery.seeds;
+
+                    rs.fertilizers.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.fertilizers
+                    });
+                    rs.fertilizers.total += nursery.fertilizers;
+
+                    rs.takersSalaries.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.takersSalaries
+                    });
+                    rs.takersSalaries.total += nursery.takersSalaries;
+
+                    rs.totalMoney.nurseries.push({
+                        name: nursery.name,
+                        quantity: nursery.totalMoney
+                    });
+                    rs.totalMoney.total += nursery.totalMoney;
+                })
+            res.status(200).send(rs);
+            }
+        });
+}
+
 //Read Nursery by id
 module.exports.getNurseryById = (req, res) => {
     if (!ObjectId.isValid(req.params.id)) {
@@ -29,7 +226,11 @@ module.exports.getNurseryById = (req, res) => {
     } else {
         Nursery
             .findById(req.params.id, (err, docs) => {
-                if (err) console.log('Error while reading data : ' + err);
+                if (err) {
+                    console.log(err)
+                    res.status(500).send("something goes wrong !!!");
+                }
+                else if (!docs) res.status(400).send("Id doesn't exist");
                 else res.send(docs);
             })       
     }
@@ -39,8 +240,9 @@ module.exports.getNurseryById = (req, res) => {
 module.exports.addNursery = (req, res) => {
     const nursery = new Nursery({
         name: req.body.name,
-        description: req.body.description,
+        partner: req.body.partner,
         location: req.body.location,
+        createdAt: req.body.createdAt
     })
     nursery.save()
         .then(() => {
@@ -58,14 +260,14 @@ module.exports.updateNursery = (req, res) => {
     else {
         Nursery.findByIdAndUpdate(
             req.params.id,
-            {   
-                name: req.body.name,
-                description: req.body.description,
-                location: req.body.location,
+            {
+                ...req.body,
+                updatedAt: Date.now()
             },
             { new: true },
             (err, docs) => {
                 if (err) res.status(500).send(err.message);
+                else if (!docs) res.status(400).send("Id doesn't exist");
                 else {
                     console.log("Nursery updated.");
                     res.status(200).send(docs)
@@ -94,43 +296,31 @@ module.exports.deleteNursery = (req,res)=>{
     }  
 }
 
-//add trees to a nursery
-module.exports.addTree = (req, res) => {
+//add or remove trees/materials in a nursery
+module.exports.editNursery = (req, res) => {
     if(!ObjectId.isValid(req.params.id)){
         res.status(400).send('Unkown Id : '+req.params.id);
     } 
     else {
-        Tree.findOneAndUpdate(
-            {name: req.body.name},
+        Nursery.findByIdAndUpdate(
+            req.params.id,
             {   
+                $inc: {
+                    ...req.body,
+                    totalTrees: functions.objSum(req.body)
+                },
                 updatedAt: Date.now(),
-                $inc: {total: req.body.quantity},
             },
             { new: true },
             (err, docs) => {
-                if (err) return res.status(400).send(err);
-                else if (!docs) return res.status(400).send({"error": "Unknown Tree"})
+                if (err) {
+                    console.log(err);
+                    res.status(500).send("something goes wrong !!!")
+                }
+                else if (!docs) res.status(400).send("Id doesn't exist");
                 else {
-                    console.log("Tree infomation updated.")
-                    Nursery.findByIdAndUpdate(
-                        req.params.id,
-                        {   
-                            updatedAt: Date.now(),
-                            $inc: {totalTrees: req.body.quantity},
-                            $addToSet: { trees: {
-                                name: req.body.name,
-                                quantity: req.body.quantity
-                            }},
-                        },
-                        { new: true },
-                        (err, docs) => {
-                            if (err) console.log(err);
-                            else {
-                                console.log("Trees added to nursery.")
-                                res.status(200).send(docs)
-                            }
-                        }
-                    );
+                    console.log("Nursery editted.")
+                    res.status(200).send(docs)
                 }
             }
         );
