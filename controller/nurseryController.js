@@ -244,7 +244,12 @@ module.exports.getStatistics = async (req, res) => {
             res.status(400).send(err.message)
         } else {
             console.log("Nurseries statistics sent.")
-            res.send(docs);
+            res.send({
+                nurseries: docs[0].nurseries,
+                trees: docs[0].trees,
+                money: docs[0].money,
+                workers: docs[0].workers
+            });
         }
     });
 }
