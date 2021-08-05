@@ -12,6 +12,9 @@ router.get('/trees', nurseryController.getTrees);
 //get materials in every nursery
 router.get('/materials', nurseryController.getMaterials);
 
+//get nurseries statictics
+router.get('/statistics', nurseryController.getStatistics);
+
 //get nursery by id
 router.get('/:id', nurseryController.getNurseryById);
 

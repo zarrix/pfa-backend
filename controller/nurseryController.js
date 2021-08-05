@@ -219,6 +219,36 @@ module.exports.getMaterials = (req, res) => {
         });
 }
 
+//get nurseries statistics
+module.exports.getStatistics = async (req, res) => {
+
+    await Nursery.aggregate([{
+        $group : {
+            _id : null,
+            nurseries: {
+                $sum: 1
+            },
+            trees : {
+                $sum : "$totalTrees"
+            },
+            money : {
+                $sum: "$totalMoney"
+            }, 
+            workers: {
+                $sum: "$workers"
+            }
+        }
+    }],function(err, docs) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.message)
+        } else {
+            console.log("Nurseries statistics sent.")
+            res.send(docs);
+        }
+    });
+}
+
 //Read Nursery by id
 module.exports.getNurseryById = (req, res) => {
     if (!ObjectId.isValid(req.params.id)) {
