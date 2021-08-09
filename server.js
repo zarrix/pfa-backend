@@ -49,7 +49,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Use routes
 // app.get('/*', checkUser);
-app.get('/user/jwtid',requireUserAuth,(req,res)=>{
+app.get('/jwtid',requireUserAuth,(req,res)=>{
   res.status(200).send(res.locals.users); 
 });
 
