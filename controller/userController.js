@@ -1,7 +1,7 @@
 const ObjectId = require("mongoose").Types.ObjectId;
 const fs = require("fs");
 const jwt = require('jsonwebtoken');
-const TOKEN_ADMIN = require('../config/keys').TOKEN_ADMIN;
+const TOKEN_SECRET = require('../config/keys').TOKEN_SECRET;
 
 // Models
 const User = require('../models/user');
@@ -140,7 +140,7 @@ module.exports.deleteUser = (req,res)=>{
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 const createToken =(id)=>{
-    return jwt.sign({id},TOKEN_ADMIN , {
+    return jwt.sign({id},TOKEN_SECRET , {
         expiresIn: maxAge
     })
 };
