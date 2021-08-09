@@ -12,7 +12,9 @@ const images = require('./routes/api/images.routes');
 const users = require('./routes/api/users.routes');
 const trees = require('./routes/api/trees.routes');
 const nurseries = require('./routes/api/nurseries.routes');
-const requests = require('./routes/api/requests.routes');
+const farmers = require('./routes/api/farmers.routes');
+const associations = require('./routes/api/associations.routes');
+const schools = require('./routes/api/schools.routes');
 const dashboard = require('./routes/api/dashboard.routes');
 
 //initialize express
@@ -55,7 +57,9 @@ app.use('/api/images', images);
 app.use('/api/users', users);
 app.use('/api/trees', trees);
 app.use('/api/nurseries', nurseries);
-app.use('/api/requests', requests);
+app.use('/api/farmers', farmers);
+app.use('/api/associations', associations);
+app.use('/api/schools', schools);
 app.use('/api/dashboard', dashboard);
 
 const port = process.env.PORT || 5000;

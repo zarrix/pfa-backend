@@ -3,14 +3,13 @@ const mongoose = require('mongoose');
 const nurserySchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     partner: String,
-    location: {
-        region: String,
-        province: String,
-        commune: String
-    },
+    region: String,
+    province: String,
+    commune: String,
     almond: {
         type: Number,
         default: 0

@@ -1,17 +1,17 @@
 const ObjectId = require("mongoose").Types.ObjectId;
 
 // Models
-const Request = require('../models/request');
+const Farmer = require('../models/farmer');
 
-//Read Requests from mongoDB
-module.exports.getRequests = (req, res) => {
+//Read farmers from mongoDB
+module.exports.getFarmers = (req, res) => {
     let filter = {};
     const sort = req.query.orderby || "updatedAt";
     const asc = (req.query.asc === 'true') ? 1 : -1;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     
-    Request
+    Farmer
         .find((err, docs) => {
             if (err) console.log('Error while reading data : ' + err);
             else res.send(docs)
@@ -21,12 +21,12 @@ module.exports.getRequests = (req, res) => {
         .skip((page - 1) * limit);
 }
 
-//Read Request by id
-module.exports.getRequestById = (req, res) => {
+//Read farmer by id
+module.exports.getFarmerById = (req, res) => {
     if (!ObjectId.isValid(req.params.id)) {
         res.status(400).send("Unkown Id : " + req.params.id);
     } else {
-        Request
+        Farmer
             .findById(req.params.id, (err, docs) => {
                 if (err) console.log('Error while reading data : ' + err);
                 else res.send(docs);
@@ -34,49 +34,48 @@ module.exports.getRequestById = (req, res) => {
     }
 }
 
-//create a Request
-module.exports.addRequest = async (req, res) => {
+//create a farmer
+module.exports.addFarmer = async (req, res) => {
     let totalTrees = 0;
-    await req.body.trees.forEach(tree => totalTrees += tree.quantity);
-    const pricePerTree = req.body.pricePerTree || 3;
-    const totalPrice = totalTrees * pricePerTree;
-    const request = new Request({
+    let totalPrice = 0;
+    await req.body.trees.forEach(tree => {
+        totalTrees += tree.quantity;
+        totalPrice += tree.quantity*tree.pricePerUnity;
+    });
+    const farmer = new Farmer({
+        responsible: req.body.responsible,
         beneficiary: req.body.beneficiary,
-        nurseryId: req.body.nurseryId,
         location: req.body.location,
         trees: req.body.trees,
         totalTrees,
-        pricePerTree,
-        totalPrice
+        totalPrice,
+        commentary: req.body.commentary
     })
-    request.save()
+    farmer.save()
         .then(() => {
-            console.log('Request added successfully.');
-            res.status(201).json(request);
+            console.log('Farmer farmer added successfully.');
+            res.status(201).json(farmer);
         })
         .catch(err => {
             console.log(err);
-            res.status(400).send("Something went wrong");
+            res.status(500).send("Something went wrong");
         });
 }
 
-//update a Request
-module.exports.updateRequest = (req, res) => {
+//update a farmer
+module.exports.updateFarmer = (req, res) => {
     if(!ObjectId.isValid(req.params.id)){
         res.status(400).send('Unkown Id : '+req.params.id);
     } 
     else {
-        Request.findByIdAndUpdate(
+        Farmer.findByIdAndUpdate(
             req.params.id,
-            {   
-                beneficiary: req.body.beneficiary,
-                location: req.body.location
-            },
+            req.body,
             { new: true },
             (err, docs) => {
                 if (err) res.status(500).send(err.message);
                 else {
-                    console.log("Request updated.");
+                    console.log("Farmer updated.");
                     res.status(200).send(docs)
                 }
             }
@@ -84,43 +83,21 @@ module.exports.updateRequest = (req, res) => {
     }
 }
 
-//delete a Request
-module.exports.deleteRequest = (req,res)=>{
+//delete a farmer
+module.exports.deleteFarmer = (req,res)=>{
     if(!ObjectId.isValid(req.params.id)){
         res.status(400).send('Unkown Id : ' + req.params.id);
     } 
     else {
-        Request.findByIdAndDelete(
+        Farmer.findByIdAndDelete(
             req.params.id, 
             (err, docs) => {
                 if (err) res.status(500).send(err.message);
                 else {
-                    console.log("Request deleted.");
+                    console.log("Farmer deleted.");
                     res.status(200).send(docs)
                 }
             }
         );  
     }  
-}
-
-//add trees to a Request
-module.exports.statusRequest = (req, res) => {
-    if(!ObjectId.isValid(req.params.id)){
-        res.status(400).send('Unkown Id : '+req.params.id);
-    } 
-    else {
-        Request.findByIdAndUpdate(
-            req.params.id,
-            {   
-                status: req.body.status,
-            },
-            { new: true },
-            (err, docs) => {
-                if (err) return res.status(400).send(err);
-                else {
-                    console.log("Status updated.")
-                }
-            }
-        );
-    }
 }

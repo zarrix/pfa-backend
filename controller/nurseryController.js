@@ -276,7 +276,9 @@ module.exports.addNursery = (req, res) => {
     const nursery = new Nursery({
         name: req.body.name,
         partner: req.body.partner,
-        location: req.body.location,
+        region: req.body.region,
+        province: req.body.province,
+        commune: req.body.commune,
         createdAt: req.body.createdAt
     })
     nursery.save()

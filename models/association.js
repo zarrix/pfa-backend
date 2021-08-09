@@ -9,10 +9,14 @@ const treesSchema = new mongoose.Schema({
     quantity: {
         type: Number,
         required: true
+    },
+    pricePerUnity: {
+        type: Number,
+        required: true
     }
 }, { _id : false });
  
-const requestSchema = new mongoose.Schema({
+const associationSchema = new mongoose.Schema({
     requestedAt: {
         type: Date,
         defaut: Date.now()
@@ -21,31 +25,47 @@ const requestSchema = new mongoose.Schema({
         region: String,
         province: String,
         commune: String,
-        village: String
+        village: {
+            type: String,
+            required: true
+        }
     },
-    nurseryId: String,
-    beneficiary: {
+    nurseries: [String],
+    responsible: {
+        name: {
+            type: String,
+            required: true
+        },
+        phone: {
+            type: String,
+            required: true
+        }
+    },
+    association: {
         name: String,
-        genre: String,
         phone: String,
         address : String
+    },
+    farmers: {
+        type: Number,
+        required: true
     },
     trees: [treesSchema],
     totalTrees: {
         type: Number,
         required: true
     },
-    pricePerTree: Number,
     totalPrice: {
         type: Number,
-        default: 0
+        required: true
     },
+    commentary: String,
     status: {
         type: String,
         default: "ongoing"
     }
 });
  
-const Request = new mongoose.model('request', requestSchema);
- 
-module.exports = Request;
+const Association = new mongoose.model('association', associationSchema);
+
+module.exports = Association;

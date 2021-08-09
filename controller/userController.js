@@ -56,8 +56,10 @@ module.exports.addUser = (req, res) => {
                             picture: img._id,
                             name: req.body.name,
                             username: req.body.username,
+                            email: req.body.email,
                             password: req.body.password,
-                            role: req.body.role
+                            role: req.body.role,
+                            access: req.body.access
                         });
                         user.save()
                            .then((docs) => {
@@ -80,8 +82,10 @@ module.exports.addUser = (req, res) => {
                         picture: img._id,
                         name: req.body.name,
                         username: req.body.username,
+                        email: req.body.email,
                         password: req.body.password,
-                        role: req.body.role
+                        role: req.body.role,
+                        access: req.body.access
                     });
                     user.save()
                         .then((docs) => {
@@ -102,10 +106,7 @@ module.exports.updateUser = (req, res) => {
     else {
         User.findByIdAndUpdate(
             req.params.id,
-            {   
-                name : req.body.name,
-                role: req.body.role
-            },
+            req.body,
             { new: true },
             (err, docs) => {
                 if (err) res.status(500).send(err.message);
@@ -160,7 +161,9 @@ module.exports.login = async (req,res)=>{
                         createdAt: docs.createdAt,
                         name: docs.name,
                         username: docs.username,
+                        email: docs.email,
                         role: docs.role,
+                        access: docs.access
                     })
                 } else {
                     console.log("Incorrect Password.");

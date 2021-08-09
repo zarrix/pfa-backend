@@ -1,6 +1,6 @@
 // Models
 const Nursery = require('../models/nursery');
-const Request = require('../models/request');
+const Farmer = require('../models/farmer');
 
 //Read donors from mongoDB
 module.exports.getInfo = async (req, res) => {
@@ -14,12 +14,12 @@ module.exports.getInfo = async (req, res) => {
             info["nurseries"]=c;
         }
     });
-    await Request.countDocuments({}, function(err, c) {
+    await Farmer.countDocuments({}, function(err, c) {
         if (err) {
             console.log(err);
             res.status(400).send(err.message)
         } else {
-            info["requests"]=c;
+            info["farmers"]=c;
         }
     });
 
