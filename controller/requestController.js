@@ -36,9 +36,10 @@ module.exports.getStatistics = async (req, res) => {
         } else {
             info["requests"] += c
             info["school"] = c;
+            res.status(200).send(info);
         }
     });
 
-    res.status(200).send(info);
+    
 
 }
