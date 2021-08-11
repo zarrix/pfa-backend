@@ -7,7 +7,10 @@ const nurserySchema = new mongoose.Schema({
         unique: true
     },
     partner: String,
-    region: String,
+    region: {
+        type: String,
+        required: true
+    },
     province: String,
     commune: String,
     almond: {

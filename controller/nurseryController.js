@@ -15,6 +15,7 @@ module.exports.getNurseries = (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     if (req.query.search) filter.name = new RegExp(req.query.search, "i");
+    if (req.query.region) filter.region = req.query.region;
     Nursery
         .find(filter, (err, docs) => {
             if (err) console.log('Error while reading data : ' + err);

@@ -21,14 +21,12 @@ const farmerSchema = new mongoose.Schema({
         type: Date,
         defaut: Date.now()
     },
-    location: {
-        region: String,
-        province: String,
-        commune: String,
-        village: {
-            type: String,
-            required: true
-        }
+    region: String,
+    province: String,
+    commune: String,
+    village: {
+        type: String,
+        required: true
     },
     nurseries: [String],
     responsible: {
