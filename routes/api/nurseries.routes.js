@@ -27,8 +27,11 @@ router.put('/:id', nurseryController.updateNursery)
 //delete a nursery
 router.delete("/:id", nurseryController.deleteNursery);
 
-// //add or remove trees/materials to a nursery
-router.put('/:id/edit', nurseryController.editNursery);
+// //add or remove trees to a nursery
+router.put('/:id/trees', nurseryController.addRemoveTrees);
+
+// //add or remove materials to a nursery
+router.put('/:id/materials', nurseryController.addRemoveMaterials);
 
 
 module.exports = router;

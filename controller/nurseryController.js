@@ -335,7 +335,7 @@ module.exports.deleteNursery = (req,res)=>{
 }
 
 //add or remove trees/materials in a nursery
-module.exports.editNursery = (req, res) => {
+module.exports.addRemoveTrees = (req, res) => {
     if(!ObjectId.isValid(req.params.id)){
         res.status(400).send('Unkown Id : '+req.params.id);
     } 
@@ -357,7 +357,35 @@ module.exports.editNursery = (req, res) => {
                 }
                 else if (!docs) res.status(400).send("Id doesn't exist");
                 else {
-                    console.log("Nursery editted.")
+                    console.log("Trees added or removed successfully.")
+                    res.status(200).send(docs)
+                }
+            }
+        );
+    }
+}
+
+//add or remove trees/materials in a nursery
+module.exports.addRemoveMaterials = (req, res) => {
+    if(!ObjectId.isValid(req.params.id)){
+        res.status(400).send('Unkown Id : '+req.params.id);
+    } 
+    else {
+        Nursery.findByIdAndUpdate(
+            req.params.id,
+            {   
+                $inc: req.body,
+                updatedAt: Date.now(),
+            },
+            { new: true },
+            (err, docs) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send("something goes wrong !!!")
+                }
+                else if (!docs) res.status(400).send("Id doesn't exist");
+                else {
+                    console.log("Materials added or removed successfully.")
                     res.status(200).send(docs)
                 }
             }

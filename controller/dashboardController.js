@@ -1,6 +1,7 @@
 // Models
 const Nursery = require('../models/nursery');
 const Farmer = require('../models/farmer');
+const Data = require('../models/data');
 
 //Read donors from mongoDB
 module.exports.getInfo = async (req, res) => {
@@ -66,4 +67,31 @@ module.exports.getDTGraph = async (req, res) => {
         }
       );
 
+}
+
+
+module.exports.getData = (req, res) => {
+
+  Data
+      .find({}, (err, docs) => {
+          if (err) console.log('Error while reading data : ' + err);
+          else res.send(docs)
+      })
+}
+
+module.exports.addData = (req, res) => {
+
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  const data = new Data({
+      [year]: {[month]: "hello"}
+  })
+  data.save()
+      .then(() => {
+          console.log('data added successfully.');
+          res.status(201).json(data);
+      })
+      .catch(err => console.log(err));
 }

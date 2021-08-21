@@ -7,5 +7,8 @@ const dashboardController = require('../../controller/dashboardController');
 router.get('/', dashboardController.getInfo);
 router.get('/dtgraph', dashboardController.getDTGraph);
 
+// Test new data structure
+router.post('/data', dashboardController.addData);
+router.get('/data', dashboardController.getData);
 
 module.exports = router;
