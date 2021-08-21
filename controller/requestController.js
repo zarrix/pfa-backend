@@ -11,7 +11,7 @@ const School = require('../models/school');
 module.exports.getRequests = (req, res) => {
     let filter = {};
     const sort = req.query.orderby || "updatedAt";
-    const asc = (req.query.asc === 'true') ? 1 : -1;
+    const asc = (req.query.asc === 'true') ? -1 : 1;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const type = req.query.type === 'farmer' || req.query.type === 'association' || req.query.type === 'school' ? {type: req.query.type} : {};
