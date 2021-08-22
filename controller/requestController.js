@@ -178,38 +178,63 @@ module.exports.deleteRequest = (req,res)=>{
 //get nurseries statistics
 module.exports.getStatistics = async (req, res) => {
 
-    let info = {};
+    let info = {
+        total: 0
+    };
 
-    await Farmer.countDocuments({}, function(err, c) {
+    await Request.aggregate([{
+        $unwind: "$type"
+    },{
+        $group : {
+            _id : '$type',
+            count: {
+                $sum: 1
+            }
+        }
+    },],function(err, docs) {
         if (err) {
             console.log(err);
             res.status(400).send(err.message)
         } else {
-            info["requests"] = c
-            info["farmers"] = c;
+            console.log("Requests statistics sent.")
+            docs.forEach(stat => {
+                info[stat._id]=stat.count;
+                info.total+=stat.count;
+            })
+            res.send(info);
         }
     });
 
-    await Association.countDocuments({}, function(err, c) {
-        if (err) {
-            console.log(err);
-            res.status(400).send(err.message)
-        } else {
-            info["requests"] += c
-            info["associations"] = c;
-        }
-    });
+    // await Farmer.countDocuments({}, function(err, c) {
+    //     if (err) {
+    //         console.log(err);
+    //         res.status(400).send(err.message)
+    //     } else {
+    //         info["requests"] = c
+    //         info["farmers"] = c;
+    //     }
+    // });
 
-    await School.countDocuments({}, function(err, c) {
-        if (err) {
-            console.log(err);
-            res.status(400).send(err.message)
-        } else {
-            info["requests"] += c
-            info["school"] = c;
-            res.status(200).send(info);
-        }
-    });
+    // await Association.countDocuments({}, function(err, c) {
+    //     if (err) {
+    //         console.log(err);
+    //         res.status(400).send(err.message)
+    //     } else {
+    //         info["requests"] += c
+    //         info["associations"] = c;
+    //     }
+    // });
+
+    // await School.countDocuments({}, function(err, c) {
+    //     if (err) {
+    //         console.log(err);
+    //         res.status(400).send(err.message)
+    //     } else {
+    //         info["requests"] += c
+    //         info["school"] = c;
+    //         res.status(200).send(info);
+    //     }
+    // });
 
     
 

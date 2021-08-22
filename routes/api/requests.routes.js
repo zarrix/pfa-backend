@@ -71,6 +71,9 @@ const requestController = require('../../controller/requestController');
 //get Requests
 router.get('/', requestController.getRequests);
 
+// get statistics based on type
+router.get('/statistics', requestController.getStatistics)
+
 //get request by id
 router.get('/:id', requestController.getRequestById);
 
@@ -83,8 +86,7 @@ router.put('/:id', requestController.updateRequest);
 //delete a Farmer
 router.delete("/:id", requestController.deleteRequest);
 
-// get statistics based on type
-router.get('/statistics', requestController.getStatistics)
+
 
 // get statistics based on status
 router.get('/statistics/status', requestController.getStatisticsStatus)
