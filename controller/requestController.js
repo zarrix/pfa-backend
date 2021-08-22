@@ -268,40 +268,31 @@ module.exports.getStatisticsStatus = async (req, res) => {
         }
     });
 
-    res.send(info);
+    res.send(info);  
 
+}
 
-    // await Farmer.countDocuments({}, function(err, c) {
-    //     if (err) {
-    //         console.log(err);
-    //         res.status(400).send(err.message)
-    //     } else {
-    //         info["requests"] = c
-    //         info["farmers"] = c;
-    //     }
-    // });
+//get requests statistics
+module.exports.getStatisticsRegion = async (req, res) => {
 
-    // await Association.countDocuments({}, function(err, c) {
-    //     if (err) {
-    //         console.log(err);
-    //         res.status(400).send(err.message)
-    //     } else {
-    //         info["requests"] += c
-    //         info["associations"] = c;
-    //     }
-    // });
+    let info = {
+        total: 0
+    };
 
-    // await School.countDocuments({}, function(err, c) {
-    //     if (err) {
-    //         console.log(err);
-    //         res.status(400).send(err.message)
-    //     } else {
-    //         info["requests"] += c
-    //         info["school"] = c;
-    //         res.status(200).send(info);
-    //     }
-    // });
-
-    
-
+    await Request.aggregate([{
+        $group : {
+            _id : '$region',
+            requests: {
+                $sum: 1
+            }
+        }
+    }],function(err, docs) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.message)
+        } else {
+            console.log("Requests in every region statistics sent.")
+            res.send(docs);
+        }
+    });
 }
