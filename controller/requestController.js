@@ -191,7 +191,7 @@ module.exports.getStatistics = async (req, res) => {
                 $sum: 1
             }
         }
-    },],function(err, docs) {
+    }],function(err, docs) {
         if (err) {
             console.log(err);
             res.status(400).send(err.message)
@@ -200,6 +200,26 @@ module.exports.getStatistics = async (req, res) => {
             docs.forEach(stat => {
                 info[stat._id]=stat.count;
                 info.total+=stat.count;
+            })
+        }
+    });
+
+    await Request.aggregate([{
+        $group : {
+            _id : '$status',
+            count: {
+                $sum: 1
+            }
+        }
+    }],function(err, docs) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.message)
+        } else {
+            console.log("Requests statistics sent.")
+            docs.forEach(stat => {
+                info[stat._id]=stat.count;
+                // info.total+=stat.count;
             })
             res.send(info);
         }
