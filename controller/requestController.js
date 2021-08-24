@@ -11,7 +11,7 @@ const School = require('../models/school');
 module.exports.getRequests = (req, res) => {
     let filter = {};
     const sort = req.query.orderby || "updatedAt";
-    const asc = (req.query.asc === 'true') ? -1 : 1;
+    const asc = (req.query.asc === 'true') ? 1 : -1;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const type = req.query.type === 'farmer' || req.query.type === 'association' || req.query.type === 'school' ? {type: req.query.type} : {};
@@ -312,6 +312,31 @@ module.exports.getStatisticsRegion = async (req, res) => {
             res.status(400).send(err.message)
         } else {
             console.log("Requests in every region statistics sent.")
+            res.send(docs);
+        }
+    });
+}
+
+//get requests statistics
+module.exports.getStatisticsDate = async (req, res) => {
+
+
+    await Request.aggregate([{
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$requestedAt" } },
+          requests: {
+            $sum: 1
+          }
+        }
+      },
+      {$sort: { "_id": 1}},
+      { $limit: 7 }
+    ],function(err, docs) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.message)
+        } else {
+            console.log("Requests based on date statistics sent.")
             res.send(docs);
         }
     });
