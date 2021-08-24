@@ -110,6 +110,7 @@ module.exports.updateUser = (req, res) => {
             { new: true },
             (err, docs) => {
                 if (err) res.status(500).send(err.message);
+                else if (!docs) res.status(400).send("Id doesn't exist");
                 else {
                     console.log("User updated.");
                     res.status(200).send(docs)

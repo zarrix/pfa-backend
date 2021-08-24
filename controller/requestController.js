@@ -2,6 +2,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 
 // Models
 const Request = require('../models/request');
+const Nursery = require('../models/nursery');
 const Farmer = require('../models/farmer');
 const Association = require('../models/association');
 const School = require('../models/school');
@@ -261,36 +262,36 @@ module.exports.getStatistics = async (req, res) => {
 }
 
 //get nurseries statistics with status
-module.exports.getStatisticsStatus = async (req, res) => {
+// module.exports.getStatisticsStatus = async (req, res) => {
 
-    let info = {
-        confirmed: 0,
-        cancelled: 0,
-        ongoing: 0
-    };
+//     let info = {
+//         confirmed: 0,
+//         cancelled: 0,
+//         ongoing: 0
+//     };
 
-    await Farmer.aggregate([{
-        $group : {
-            _id: "$status" ,
-            total: {
-                $sum: 1
-            }
-        }
-    }],async function(err, docs) {
-        if (err) {
-            console.log(err);
-            res.status(400).send(err.message)
-        } else {
-            info.confirmed += await docs.filter(doc => doc._id === "confirmed")[0].total;
-            info.cancelled += await docs.filter(doc => doc._id === "cancelled")[0].total || 0;
-            info.ongoing += await docs.filter(doc => doc._id === "ongoing")[0].total;
-            console.log(info);
-        }
-    });
+//     await Farmer.aggregate([{
+//         $group : {
+//             _id: "$status" ,
+//             total: {
+//                 $sum: 1
+//             }
+//         }
+//     }],async function(err, docs) {
+//         if (err) {
+//             console.log(err);
+//             res.status(400).send(err.message)
+//         } else {
+//             info.confirmed += await docs.filter(doc => doc._id === "confirmed")[0].total;
+//             info.cancelled += await docs.filter(doc => doc._id === "cancelled")[0].total || 0;
+//             info.ongoing += await docs.filter(doc => doc._id === "ongoing")[0].total;
+//             console.log(info);
+//         }
+//     });
 
-    res.send(info);  
+//     res.send(info);  
 
-}
+// }
 
 //get requests statistics
 module.exports.getStatisticsGraph = async (req, res) => {
@@ -334,4 +335,51 @@ module.exports.getStatisticsGraph = async (req, res) => {
             res.send(rs);
         }
     });
+}
+
+//delete a farmer
+module.exports.confirmRequest = async (req,res)=>{
+    if(!ObjectId.isValid(req.params.id)){
+        res.status(400).send('Unkown Id : ' + req.params.id);
+    } 
+    else {
+        await req.body.forEach(item => {
+
+            let toChange = {};
+            let total = 0
+            for (let i=0; i < item.type.length; i++) {
+                toChange[item.type[i]] = -item.quantity[i];
+                total += item.quantity[i]
+            }
+
+            console.log(toChange);
+            console.log(total)
+
+            Nursery.findByIdAndUpdate(
+                item.nursery,
+                {   
+                    $inc: {
+                        ...toChange,
+                        totalTrees: -total
+                    },  
+                    updatedAt: Date.now(),
+                },
+                { new: true },
+                (err, docs) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send("something goes wrong !!!")
+                    }
+                    else if (!docs) {
+                        res.status(400).send("Id " + item.nursery + "doesn't exist");
+                    }
+                    else {
+                        console.log("trees removed from nursery: " + item.nursery)
+                    }
+                }
+            );
+        });
+
+        res.send("reqeust was confirmed succefully")
+    }  
 }

@@ -31,7 +31,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    access: [String],
+    access: {
+        type: Array,
+        default: ['D', 'M', 'N', 'R', 'P']
+    },
     createdAt: {
         type: Date,
         default: Date.now()

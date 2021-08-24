@@ -21,11 +21,14 @@ router.post('/', requestController.addRequest);
 //edit a farmer request
 router.put('/:id', requestController.updateRequest);
 
+//confirm a farmer request
+router.put('/:id/confirm', requestController.confirmRequest);
+
 //delete a Farmer
 router.delete("/:id", requestController.deleteRequest);
 
 // get statistics based on status
-router.get('/statistics/status', requestController.getStatisticsStatus)
+// router.get('/statistics/status', requestController.getStatisticsStatus)
 
 
 
