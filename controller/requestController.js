@@ -293,11 +293,9 @@ module.exports.getStatisticsStatus = async (req, res) => {
 }
 
 //get requests statistics
-module.exports.getStatisticsRegion = async (req, res) => {
+module.exports.getStatisticsGraph = async (req, res) => {
 
-    let info = {
-        total: 0
-    };
+    let rs = {};
 
     await Request.aggregate([{
         $group : {
@@ -312,14 +310,9 @@ module.exports.getStatisticsRegion = async (req, res) => {
             res.status(400).send(err.message)
         } else {
             console.log("Requests in every region statistics sent.")
-            res.send(docs);
+            rs['region'] = docs;
         }
     });
-}
-
-//get requests statistics
-module.exports.getStatisticsDate = async (req, res) => {
-
 
     await Request.aggregate([{
         $group: {
@@ -337,7 +330,8 @@ module.exports.getStatisticsDate = async (req, res) => {
             res.status(400).send(err.message)
         } else {
             console.log("Requests based on date statistics sent.")
-            res.send(docs);
+            rs['date'] = docs;
+            res.send(rs);
         }
     });
 }

@@ -10,10 +10,7 @@ router.get('/', requestController.getRequests);
 router.get('/statistics', requestController.getStatistics)
 
 // get statistics based on region
-router.get('/statistics/region', requestController.getStatisticsRegion)
-
-// get statistics based on last week
-router.get('/statistics/date', requestController.getStatisticsDate)
+router.get('/statistics/graph', requestController.getStatisticsGraph)
 
 //get request by id
 router.get('/:id', requestController.getRequestById);
