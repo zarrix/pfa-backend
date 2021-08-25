@@ -66,7 +66,18 @@ module.exports.addUser = (req, res) => {
                                 console.log('User added successfully ...');
                                 res.status(201).send(docs);
                            })
-                           .catch(err => res.status(400).send(err.message));
+                           .catch(err => {
+                                Image.findByIdAndDelete(
+                                    img._id, 
+                                    (err, docs) => {
+                                        if (err) res.status(500).send(err.message);
+                                        else {
+                                            console.log("User's Image deleted due to some error");
+                                        }
+                                    }
+                                );
+                                res.status(400).send(err.message);
+                            });
                 });
     } else  {
         const image = new Image({
@@ -92,7 +103,18 @@ module.exports.addUser = (req, res) => {
                             console.log('User added successfully ...');
                             res.status(201).send(docs);
                         })
-                        .catch(err => res.status(400).send(err.message));
+                        .catch(err => {
+                            Image.findByIdAndDelete(
+                                img._id, 
+                                (err, docs) => {
+                                    if (err) res.status(500).send(err.message);
+                                    else {
+                                        console.log("User's Default Image deleted due to some error");
+                                    }
+                                }
+                            ); 
+                            res.status(400).send(err.message);
+                        });
             });
     }
         
@@ -131,6 +153,15 @@ module.exports.deleteUser = (req,res)=>{
             (err, docs) => {
                 if (err) res.status(500).send(err.message);
                 else {
+                    Image.findByIdAndDelete(
+                        docs.picture, 
+                        (err, docs) => {
+                            if (err) res.status(500).send(err.message);
+                            else {
+                                console.log("User's Image deleted...");
+                            }
+                        }
+                    );
                     console.log("User deleted...");
                     res.status(200).send(docs)
                 }
