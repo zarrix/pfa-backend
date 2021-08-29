@@ -332,6 +332,15 @@ module.exports.getStatisticsGraph = async (req, res) => {
         } else {
             console.log("Requests based on date statistics sent.")
             rs['date'] = docs;
+        }
+    });
+
+    await Request.countDocuments({}, function(err, c) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.message)
+        } else {
+            rs["total"]=c;
             res.send(rs);
         }
     });
