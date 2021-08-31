@@ -173,7 +173,7 @@ module.exports.deleteUser = (req,res)=>{
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 const createToken =(id)=>{
     return jwt.sign({id},TOKEN_SECRET , {
-        expiresIn: maxAge
+        expiresIn: maxAge,
     })
 };
 
@@ -186,7 +186,7 @@ module.exports.login = async (req,res)=>{
                 if (req.body.password === docs.password) {
                     console.log("User logged successfully ...");
                     const token = createToken(docs._id);
-                    res.cookie('jwt',token,{httpOnly:true , maxAge:maxAge });
+                    res.cookie('jwt',token,{httpOnly:true , maxAge:maxAge, domain: "http://hafdashboard.surge.sh" });
                     res.status(200).json({
                         _id: docs._id,
                         picture: docs.picture,
