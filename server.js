@@ -20,7 +20,7 @@ const app = express();
 
 //Autorisation les requetes pour CLIENTS_URL
 const corsOptions = {
-    origin: ['http://hafdashboard.surge.sh', 'https://612e668e19393e00e21559da--hafdashboard.netlify.app'],  //request source permited
+    origin: ['http://hafdashboard.surge.sh', 'https://612e668e19393e00e21559da--hafdashboard.netlify.app', 'http://localhost:3000'],  //request source permited
     credentials: true,  //to allow exposing code to javascript
     'allowedHeaders': ['sessionId', 'Content-Type'], 
     'exposedHeaders': ['sessionId'],  //
