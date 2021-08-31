@@ -20,7 +20,7 @@ const app = express();
 
 //Autorisation les requetes pour CLIENTS_URL
 const corsOptions = {
-    origin: 'https://hafbackend.herokuapp.com',  //request source permited
+    origin: 'http://hafdashboard.surge.sh',  //request source permited
     credentials: true,  //to allow exposing code to javascript
     'allowedHeaders': ['sessionId', 'Content-Type'], 
     'exposedHeaders': ['sessionId'],  //
