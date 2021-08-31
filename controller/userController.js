@@ -186,6 +186,9 @@ module.exports.login = async (req,res)=>{
                 if (req.body.password === docs.password) {
                     console.log("User logged successfully ...");
                     const token = createToken(docs._id);
+                    res.header("Access-Control-Allow-Headers","*");
+                    res.header('Access-Control-Allow-Credentials', true);
+                    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
                     res.cookie('jwt',token,{httpOnly:true , maxAge:maxAge });
                     res.status(200).json({
                         _id: docs._id,
